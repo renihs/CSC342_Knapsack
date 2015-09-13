@@ -1,8 +1,10 @@
-package Program1;
+package Program1.CSC342_Knapsack;
 
 /**
  * @author Stephen Austin Shiner
  * Account #21
+ * @author Bryan Beale
+ * Account #5
  * Created at 1:23:35 PM on Aug 31, 2015 using UTF-8 encoding
  * Completed: 
  * File: p1.java
@@ -23,7 +25,7 @@ public class p1
 {
     public static void main(String[] args) throws IOException
     {
-        final String INPUT_FILE = "../p1.dat"; // Input file String
+        final String INPUT_FILE = "./p1.dat"; // Input file String
         
         File file = new File(INPUT_FILE); // Create new File instance with input file name String
 
@@ -37,6 +39,16 @@ public class p1
         
         // Establish program/file connection
         Scanner inputFile = new Scanner(file);
+        
+        // Declare the values to hold our nanosecond run times
+        long startTime = 0;
+        long stopTime = 0;
+        long overTime = 0;
+        
+        // nano second -- clock resolution
+        startTime = System.nanoTime();
+        stopTime = System.nanoTime();
+        overTime = stopTime - startTime;
         
         // Now we can start declaring/initializing our variables, since the file exists
         int n, w; // Declare our number and weight variables
@@ -63,6 +75,9 @@ public class p1
         }
         
         inputFile.close(); // Terminate program/file connection
+        
+        // start timer for execution timing
+        startTime = System.nanoTime();
         
         // This is the main set of nested loops
         // Loops will iterate through each set (and subset) of values exhaustively,
@@ -100,10 +115,17 @@ public class p1
                 finalInclude[i] = false;
         }
         
+        stopTime = System.nanoTime(); // Get time algorithm completes
+        long time = stopTime - startTime - overTime; // Calculate time to execute algorithm
+        
         // Print out final results, formatted for 7-char left-justified columns
         System.out.printf("%-7s%-7s%-7s%-7s%n", "item #", "value", "size", "include");
         for (int i = 1; i <= n; i++)
             System.out.printf("%-7d%-7d%-7d%-7b%n", i, valuesAndSizes[0][i], valuesAndSizes[1][i], finalInclude[i]);
+        
+        System.out.println("Total Execution Time in nanoseconds: " + time); // Print time to execute algorithm in nanoseconds
+        System.out.println("Total Execution Time in microseconds: " + time / 1000.0); // Print time to execute algorithm in microseconds
+        System.out.println("Total Execution Time in milliseconds: " + time / 1000000.0); // Print time to execute algorithm in milliseconds
     }
 
 }
