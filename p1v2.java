@@ -17,7 +17,9 @@ package Program1.CSC342_Knapsack;
  */
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 
@@ -155,7 +157,48 @@ public class p1v2
         System.out.println("Total Execution Time in nanoseconds: " + time); // Print time to execute algorithm in nanoseconds
         System.out.println("Total Execution Time in microseconds: " + time / 1000.0); // Print time to execute algorithm in microseconds
         System.out.println("Total Execution Time in milliseconds: " + time / 1000000.0); // Print time to execute algorithm in milliseconds
+        
+        File outFile = new File("timings.csv"); // Create file object for our output timings file
+        PrintWriter outputFile; // Declare our object to write the values out to the output file
+        
+        if (!outFile.exists()) // Check if output timings file exists, if it doesnt, we need to create it and add headers
+        {   // Create output file connection
+            outputFile = new PrintWriter(new FileOutputStream(outFile, true));
+            // Write out the first three column headers
+            outputFile.print("Number of items,Total size/weight,Execution Time (ns),");
+            
+            for (int i = 1; i <= 10; i++) // Loop writes the headings out in csv format
+            {
+                if (i < 10) // First 9 value/weight headings
+                    outputFile.print("Value " + i + ",Weight " + i + ",");
+                else // Final value/weight heading
+                    outputFile.print("Value " + i + ",Weight " + i + "\n");
+            }
+            
+            outputFile.close(); // Terminate program/file connection
+        }
+        
+        // Create output file connection
+        outputFile = new PrintWriter(new FileOutputStream(outFile, true));
+        
+        outputFile.print(n + "," + w + "," + time + ","); // Write out the first three values in csv format
+        
+        // Loop writes out the value/weight pairs to the output file in csv format 
+        for (int i = 1; i < n; i++)
+        {
+            if (i + 1 != n) // If last value/weight pair
+            {   // Write out the value and weight in csv format
+                outputFile.print(valuesAndSizes[0][i] + ",");
+                outputFile.print(valuesAndSizes[1][i] + ",");
+            }
+            else // Last value/weight pair, wo write a newline instead of a comma at the end
+            {   // Write out the value and weight in csv format
+                outputFile.print(valuesAndSizes[0][i] + ",");
+                outputFile.print(valuesAndSizes[1][i] + "\n");
+            }
+        }
+        
+        outputFile.close(); // Terminate program/file connection
     }
-
 }
 
